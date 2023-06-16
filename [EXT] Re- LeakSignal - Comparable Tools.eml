@@ -1,0 +1,514 @@
+Received: from HE1PR8503MB0105.NAMPRD85.PROD.OUTLOOK.COM (2603:10a6:23:19::20)
+ by BL1PR85MB0532.NAMPRD85.PROD.OUTLOOK.COM with HTTPS; Wed, 14 Jun 2023
+ 20:35:58 +0000
+Received: from BL0PR85CA0005.NAMPRD85.PROD.OUTLOOK.COM (2603:10b6:208:9c::24)
+ by HE1PR8503MB0105.NAMPRD85.PROD.OUTLOOK.COM (2603:10a6:23:19::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.37; Wed, 14 Jun
+ 2023 20:35:54 +0000
+Received: from DM6NAM10FT011.eop-nam10.prod.protection.outlook.com
+ (2a01:111:f400:7e88::207) by BL0PR85CA0005.outlook.office365.com
+ (2603:10b6:208:9c::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.37 via Frontend
+ Transport; Wed, 14 Jun 2023 20:35:53 +0000
+Authentication-Results: spf=fail (sender IP is 167.219.88.80)
+ smtp.mailfrom=redhat.com; dkim=fail (signature did not verify)
+ header.d=redhat.com;dmarc=fail action=none header.from=redhat.com;
+Received-SPF: Fail (protection.outlook.com: domain of redhat.com does not
+ designate 167.219.88.80 as permitted sender) receiver=protection.outlook.com;
+ client-ip=167.219.88.80; helo=ushybrid.us.deloitte.com;
+Received: from ushybrid.us.deloitte.com (167.219.88.80) by
+ DM6NAM10FT011.mail.protection.outlook.com (10.13.152.178) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6500.26 via Frontend Transport; Wed, 14 Jun 2023 20:35:53 +0000
+Received: from USNDC470.us.deloitte.com (10.28.30.32) by
+ USNDC470.us.deloitte.com (10.28.30.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Wed, 14 Jun 2023 16:35:34 -0400
+Received: from USNDC1426.us.deloitte.com (10.28.30.126) by
+ USNDC470.us.deloitte.com (10.28.30.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Wed, 14 Jun 2023 16:35:34 -0400
+Received: from usndcirpt3.us.deloitte.com (10.28.230.29) by
+ USNDC1426.us.deloitte.com (10.28.30.126) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Wed, 14 Jun 2023 16:35:33 -0400
+Received: from esa.deloitte.iphmx.com ([68.232.130.230])
+  by usndcirpt3.us.deloitte.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 15:35:32 -0500
+Received-SPF: Pass (esa.deloitte.iphmx.com: domain of
+  bhanvey@redhat.com designates 170.10.129.124 as permitted
+  sender) identity=mailfrom; client-ip=170.10.129.124;
+  receiver=esa.deloitte.iphmx.com;
+  envelope-from="bhanvey@redhat.com";
+  x-sender="bhanvey@redhat.com"; x-conformance=spf_only;
+  x-record-type="v=spf1"; x-record-text="v=spf1
+  ip4:159.92.157.0/24 ip4:159.92.158.0/24 ip4:159.92.159.0/24
+  ip4:159.92.160.0/24 ip4:159.92.161.0/24 ip4:159.92.162.0/24
+  ip4:161.71.32.0/19 ip4:161.71.64.0/20 ip4:162.247.160.0/21
+  ip4:167.89.0.0/17 ip4:168.245.0.0/17 ip4:170.10.129.0/24
+  ip4:170.10.133.0/24 ip4:173.194.0.0/16 ip4:185.58.84.93/32
+  ip4:192.250.208.112 include:spf2.redhat.com -all"
+Authentication-Results-Original: esa.deloitte.iphmx.com; spf=Pass
+ smtp.mailfrom=bhanvey@redhat.com; dkim=pass (signature verified)
+ header.i=@redhat.com; dmarc=pass (p=none dis=none) d=redhat.com
+IronPort-SDR: 648a2491_hwDDrxP375b8j+l33WSAbFlWPsG8PNjvkb5PQ8BRGwwT9Vd
+ /lNET71EPB9z5q4/CcdKFhuThTHOnM5EFeapoMg==
+X-Deloitte-MX-Route: IncomingMail
+X-External-Sender: True
+X-SDR-Check: True
+X-IPAS-Result: =?us-ascii?q?A0EDAAAwI4pkh3yBCqpXAxoBAQEBAQEBAQEBAwEBAQESA?=
+ =?us-ascii?q?QEBAQICAQEBAYF7BQEBAQELAYErgQN1gQYHCEeEUoEjhnqGTIJoA4ETlgyEe?=
+ =?us-ascii?q?YFWFIFqDwEBAQEBAQEBAQcBATUPBAEBAwMBgUyDMwKFfAIkATQJDgECAQIBA?=
+ =?us-ascii?q?QEBAQMCAwEBAQEBAQMBAQEEAQEBAgEBAgQDAQEBAhABAQEBIhcHDhAnhWgNg?=
+ =?us-ascii?q?jcpAXWBCAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBA?=
+ =?us-ascii?q?QEBAg15AQEBAgESER0BAQcwAQQLCwcEBzACAiISAQUBDg4GEwgTB4JcAYI5I?=
+ =?us-ascii?q?wOgIQEJAW00PwIQGAEpFwEMgQqJDwEBAXiBMoEBgggBAQYEAwIBnUaBXwkSg?=
+ =?us-ascii?q?TABh1l8SxcBAYNeF4M2AXonG4FJRCZvNoEGgTc4PoFTgQSBOAELBwFCCwIZg?=
+ =?us-ascii?q?xSCZ4lcgVEOCzyCLYFvS44YS11vgR6BIn8CCQIRZ4EICFyBcEACDVULC2MGg?=
+ =?us-ascii?q?RaBFhJiSgICESkTFVIIEGMdAwcEAoEFEC8HBDIfCQYJGBgXJwZRBy0kCRMVQ?=
+ =?us-ascii?q?gR0gmUKgQ0/FQ4RglwtNkEbWnQBBjYBAgFDHUADC2ULPTUUH1EigVcwgUwkJ?=
+ =?us-ascii?q?J9TM4FmfQ9ICEpfO0YFBU0Qkl8LJIMJjg6LU5RShBKhGjOEAYxsjySJRodak?=
+ =?us-ascii?q?D2TToFKgiiLMoUcAgoHBhAjgUA6bHAzGggbFWwGgjAJRgMZD44gGYNbkBgiN?=
+ =?us-ascii?q?DgDAgcBCgEBAwmIboJaAQE?=
+IronPort-PHdr: A9a23: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
+ DMSzL/4JJhVPYr+iRUKVw==
+IronPort-Data: A9a23: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
+ YT4eIycfHyGdA==
+IronPort-HdrOrdr: A9a23:kxCNkKtwJpsrYDcxpmydrVUi7skD99V00zEX/kB9WHVpm5Sj5q
+ KTdYcgpHrJYVcqKQIdcL+7WJVoLUmwyXcX2/hiAV7BZniEhILAFugLhuHfKlbbdBEWg9Q96U
+ 4WScZD4bPLYWSSxvyKhDVQW+xQp+Wv4eTknuzGi3F1TQZrbaYI1XYeNi+LVgBtWglaD5tRLu
+ vk2iNonUvZRZxMA/7LfUXsfIX41qf2fNKKW297O/ZohTP+8g9BptTBYmilNqVyaUIz/Z4ytX
+ XAmxb0or6uqe2/13bnphHuxoUThd/o0NcGG8CWkMgSLVzX+3eVWLg=
+X-Talos-CUID: 9a23:xX4IiW7wATD73nOQItss5kdPPOc0SCHm/jTzJ2qmVG1xdqaPcArF
+X-Talos-MUID: 9a23:ZdP0WQZ9rn66euBTpw3ooANGBddT2KmsE28ntpsshdaZKnkl
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="119745731"
+X-IronPort-AV: E=Sophos;i="6.00,243,1681189200"; 
+   d="scan'208,217";a="119745731"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+X-Agari-Original-From: bhanvey@redhat.com
+X-Agari-Original-To: mamartino@deloitte.com
+X-Agari-Authentication-Results: esa.deloitte.iphmx.com; spf=Pass smtp.mailfrom=bhanvey@redhat.com;
+ dkim=pass (signature verified) header.i=@redhat.com;
+ dmarc=pass (p=none dis=none) d=redhat.com
+Subject: [EXT] Re: LeakSignal - Comparable Tools
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+  by esa2.deloitte.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 15:35:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1686774927;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+WawOR1Sqx0TDwTcdeNh8faprHsL/C54pD1KqfGoD68=;
+	b=EV5L68kyqTF6lAtf2Z9FIbwa1NJicPzS1YE4zrmydrw2JgwQELM2IqjLRTz6ikD1TznTdV
+	EAejYtt235Gh34rPPuo1dN4KPMyfapypICCFJurnhfKmXwLFPFNQqsyBs0wfIchKw58Ocb
+	C12WKE8PQ9bzsyDQDNqWtgxjZEgcrFo=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-77-2SF_sTZ4NJCEZgzIicQ1Ow-1; Wed, 14 Jun 2023 16:35:26 -0400
+X-MC-Unique: 2SF_sTZ4NJCEZgzIicQ1Ow-1
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-5559caee9d3so778210eaf.2
+        for <mamartino@deloitte.com>; Wed, 14 Jun 2023 13:35:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686774925; x=1689366925;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+WawOR1Sqx0TDwTcdeNh8faprHsL/C54pD1KqfGoD68=;
+        b=YuxM/Wt0TSSjXLBzl9tTgZAWHvtbIx/8Bf1DyO9xuom3WP4NmUiG2fcP0QvqSgYP/y
+         KOsS+pGx/tIpQG26lqLb9n3Gp+cNkQE1xYSQ/IRck3M2IwtCc9k9ifRLll/wxSFSW1IS
+         VaD8VCbfByCuZRyi4TKVkgIjNKLHH6Wb8Mzs/8GAtoWwXntXYFw+i15HFBdpzKE/NMF3
+         YcgA3U3OGKaPraCjWXRuHxAa7jb4yN65QLk1nDsVwKpwymI+SGVvspwSW8RDFP9kHET+
+         /+C3VklqsKSFJQJ2WhJzkhZnKetDJ9EO5bwxxYWyIHM7nlQ/LNiRYj/vH3XDMFMM6Ofu
+         ThfQ==
+X-Gm-Message-State: AC+VfDyLF1MXwXkCBzDhMc8b8T7lvFF9FMtXlmS6Vp29emez98Hf54X4
+	dwuc0cdIYhln0I58re/ZBhCdR4oFnYfTiHfFvIpINYvfFr45+5on34pbXI6CFIV0U2BYcJumI0E
+	Vt5F48ou882UbmdLf0Z5FEqBICZXG9SnBBKjq/uQM
+X-Received: by 2002:a05:6358:1a94:b0:12b:db1d:f606 with SMTP id gm20-20020a0563581a9400b0012bdb1df606mr8308923rwb.12.1686774924877;
+        Wed, 14 Jun 2023 13:35:24 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ664jx4CLG4mSLb0OEXdT4e22uz+20l6g/p1MwAdqjx9Cii2DY6dN2nSmJG3m8OS4H4BswSNk48aQRukpr0zJE=
+X-Received: by 2002:a05:6358:1a94:b0:12b:db1d:f606 with SMTP id
+ gm20-20020a0563581a9400b0012bdb1df606mr8308904rwb.12.1686774924508; Wed, 14
+ Jun 2023 13:35:24 -0700 (PDT)
+References: <BL1PR85MB05324BC6C6D0221FC3FCCAC4D55AA@BL1PR85MB0532.NAMPRD85.PROD.OUTLOOK.COM>
+In-Reply-To: <BL1PR85MB05324BC6C6D0221FC3FCCAC4D55AA@BL1PR85MB0532.NAMPRD85.PROD.OUTLOOK.COM>
+From: Brian Hanvey <bhanvey@redhat.com>
+Date: Wed, 14 Jun 2023 14:34:48 -0600
+Message-ID: <CAJdPyDtXbqa_M4wyGdJWTgjcsTD1nK5iXdxOYtqn4pXiiAjBRA@mail.gmail.com>
+To: "Martino, Jack" <mamartino@deloitte.com>
+Cc: "Buenviaje, Miguel" <mbuenviaje@deloitte.com>, "deJesus, Manny" <madejesus@deloitte.com>, 
+	"Pakkam Isaac, Clement" <cpakkamisaac@deloitte.com>, "Ngugi, Nash" <nngugi@deloitte.com>, 
+	"Larbi, Henrietta" <hlarbi@deloitte.com>, "Rodriguez, Gabriel" <gabrrodriguez@deloitte.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: multipart/alternative; boundary="0000000000003114a405fe1ce41a"
+Return-Path: bhanvey@redhat.com
+X-OrganizationHeadersPreserved: USNDC1426.us.deloitte.com
+X-MS-Exchange-Organization-ExpirationStartTime: 14 Jun 2023 20:35:53.2824
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id:
+ af175eb5-1cd4-481d-f34e-08db6d16f2c5
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Organization-MessageDirectionality: Originating
+X-CrossPremisesHeadersPromoted:
+ DM6NAM10FT011.eop-nam10.prod.protection.outlook.com
+X-CrossPremisesHeadersFiltered:
+ DM6NAM10FT011.eop-nam10.prod.protection.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic:
+ DM6NAM10FT011:EE_|HE1PR8503MB0105:EE_|BL1PR85MB0532:EE_
+X-MS-Exchange-Organization-AuthSource: USNDC1426.us.deloitte.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-OriginatorOrg: deloitte.onmicrosoft.com
+X-MS-Office365-Filtering-Correlation-Id: af175eb5-1cd4-481d-f34e-08db6d16f2c5
+X-MS-Exchange-Organization-SCL: -1
+X-ETR: IronPort Authentication
+X-Microsoft-Antispam: BCL:0;
+X-Forefront-Antispam-Report:
+ CIP:167.219.88.80;CTRY:US;LANG:en;SCL:-1;SRV:;IPV:CAL;SFV:NSPM;H:ushybrid.us.deloitte.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:;DIR:INB;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2023 20:35:53.1574
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: af175eb5-1cd4-481d-f34e-08db6d16f2c5
+X-MS-Exchange-CrossTenant-Id: 36da45f1-dd2c-4d1f-af13-5abe46b99921
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=36da45f1-dd2c-4d1f-af13-5abe46b99921;Ip=[167.219.88.80];Helo=[ushybrid.us.deloitte.com]
+X-MS-Exchange-CrossTenant-AuthSource: USNDC1426.us.deloitte.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR8503MB0105
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:05.6574084
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.6477.035
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;auth:0;dest:I;ENG:(910001)(944506478)(944626604)(920097)(930097);
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SUlZOXJGZCs5M3RDVDdLRWZoMGQ4bE9ac3M4czM5OTU3SC80VXNBWnIwRm45?=
+ =?utf-8?B?eVZoODZBMFc3N3NEYjhyUHpIMlNiNmkwVm5qR0k1VDFLZHlnTXFUZUpJL0VS?=
+ =?utf-8?B?MG1jVDNsczJHWXE5aWY2TVFPUGNOUHM4c0RXdC84NjFFNU5SMko0NXBxNHVx?=
+ =?utf-8?B?N2ZvdURBQjFRL2pYbGR4SjM4cmFhM1YyYndIWHpFQktXaXJUUFJPQWt1Umdq?=
+ =?utf-8?B?dlRWb0pQUnF5emsybDlPcVA1Vzd2THAvTUZ5cFBGSTRyOXZOOW44NFpBYS92?=
+ =?utf-8?B?N3R4UG44cHorcHo0cEs0UVN3YWtyRlpxb0lQKzRRaDVLMTAwTE1CbEw5S2dJ?=
+ =?utf-8?B?K3VJY1ZHcDV4bHNuK0RXM2thVUhRLzBvdHgrMEk0U20vOW13MDZuL2d1alRW?=
+ =?utf-8?B?R08vcEI3QUs4VFltWFdGZVhvY2VGdXJDMXZiK2hzNVZtcnhSOU5KaGl3dmMw?=
+ =?utf-8?B?N3Q5VFhqTGZ5bnpHekY4dFA2V1dWMVlyV1VBSFRDY1ZEM1pCZ3llT1AvWjJQ?=
+ =?utf-8?B?V09CZVdoMW4rM1VXdGlsRU1CUVl5bWYxQWxSMkNVaXdZL2ROUjZ5Uk1ocmhz?=
+ =?utf-8?B?UVBlNXpSb3h0d04vdXZUNEZQdnoxSU1jUTNFWnFEbmV1bCtweWZnMkhQSXU2?=
+ =?utf-8?B?dkc4b05JMWg3TjBVbU93dHZvVGdPVGlYelE3cUNqWnQyQUNSV2JJTW8rYWJD?=
+ =?utf-8?B?anhqdGNueHNmZXpvL2FuWGxhcERmOEZ1RklycXkxeUx1ZFhzbUxoYjlzTkZV?=
+ =?utf-8?B?R3I5WFhDMlIxTmFCVCtXbE1IM3V4QkREM0lSK3RsM3p5bEd6N1l4NEtLVFU2?=
+ =?utf-8?B?V3FxN3puR2I3WXJsZlJObU12K1pTcHpNcFIza3BEUTVMN1FMMHJvdTRwMDhW?=
+ =?utf-8?B?WFdwd3JSeVZkZ243SXJBWUdoZC9uY01nbVUvcEExVE5HRllIaWVkUFRhcEFp?=
+ =?utf-8?B?MC8rY2oybFJmMExseTlaU0NtckhzMUJCK0RYYlhHSlFkQlg4Qll6OEtrQ2wv?=
+ =?utf-8?B?WW13cmJ1b21yaHlGQ1RXYm45azBKUmVtNDZlcW1sSlFXRXl4bUYvTytGa2tZ?=
+ =?utf-8?B?Tk1WOHFodHFNb2lsVWNNVGZFWFRqVUUraXZzMG9uYTh2WWxuc1diNWpVdXoy?=
+ =?utf-8?B?YXM1VktEOXR3YnlFSnI3NUV1QXp2cHJKZE1SNHZVTWdoNElwUDNGL3lzQmxk?=
+ =?utf-8?B?YXAxV2hrSWs0dFBHaG1FRFZIMWpDN1pKcXFBOWlzS0tCY042QUY1Y3JNZkYy?=
+ =?utf-8?B?SDJ3QXpzbWpmYWlycXpJUXB5UnRDQS9td2tUVUZNVzJtS1ZzMm1oMUtqMXBI?=
+ =?utf-8?B?NzAzN1F0dWkrUW55bVVVRXQ1ZUdWdS8rcXRIRlJ1Q1U0eHIrTHBuY3NMcUdK?=
+ =?utf-8?B?eUdGNS8zZmZPemhpb21zVE1YMEc2Vm5DeVRCcGdUWFpXZHhwQ05yWmJGNnM3?=
+ =?utf-8?B?cGF1Y0hsNkRmWnBUWVdkOHo1V3NXeS9IK2lOek5lZStMSW15c1ZoYnl6RnRO?=
+ =?utf-8?B?VEJiMWs1dS9KbGkxNTN2SGtHcE1ka2pFQjhud2p2b3QyVUdybW9QK3ErVnp3?=
+ =?utf-8?B?UXRaNGFVYzlBczNCR3RTSXBha2ZVRmxYN09EQjdFTHppdmliUUJVdFJ5M3Bm?=
+ =?utf-8?B?RmZkWitkY1dQck1oOXZXT2NhMFIxbm9UcG4rUjh4Unp4R1UydXQ2WmVZWFV4?=
+ =?utf-8?B?VlFrTUJXdVh0K3REaVMxaVE1YnphVjJxUEZaTmNLNWM1dEd4MG0wUjB2VkJo?=
+ =?utf-8?B?dU15RG5vUm9qNFNycnpKTG9xQjM3UC9mSWdvQTJrN2RCUm0yOEtWcEJBU0J2?=
+ =?utf-8?B?dVQ0Yll0YzRubFpscjBqcDBzdFhTS29LWG9Ec25sQkdSQ0dBY0Y4RENHcnFl?=
+ =?utf-8?B?a2tCKzVVd1NWSEJZWHo5aktxOVNmaHcwVUhWQnh6bExnZ2djeVJvUXNLSU5n?=
+ =?utf-8?B?UUZnNVl2MUlvd0RKRG1PVUhkSEtqYVNQVzlURjh1QlluNTE0QWVsN0dyTnl2?=
+ =?utf-8?B?MlRHTzhnUWtsZzNmSEdOdlg2NVJxazVPTHR3cmJqeHlIWU9ZeUJaZ2Znd1JM?=
+ =?utf-8?B?V0FmcW13Q3ZnVWhiR0QzZGsrSU5Sc2krRmRFYVBMTHBWZ01MRzQ0bkg2T0xG?=
+ =?utf-8?B?UCs1NUc5SjZZMUFFZEJEUHU5MmNvR0haTHFXT0loWFpITVprZW5La2dFSi94?=
+ =?utf-8?B?VUtZL0I3Mml0cVJFbVp1TmRYQ3ZZamc1cTZGME9kWU1lQ2hDMENCeHdvWThE?=
+ =?utf-8?B?b1h3K2NtZVlpN2Z6c3FYTUFENVpTb21Ob1ZpcHlYTktaYkhGeWJpQ0h1REZT?=
+ =?utf-8?Q?thkvquZt+LqofyfpiC?=
+MIME-Version: 1.0
+
+--0000000000003114a405fe1ce41a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello Jack,
+I've reached out to our OpenShift CTO office to get some details around how
+we would/could secure the data plane in a service mesh env...I see
+Leaksignal as a good opportunity to fit this need.
+From an industry perspective, I'd see this being a value add to
+reduce/mitigate the risk profile in the FS market when it comes to K8's
+platforms.  Would be a good check box for regulators.
+
+I'll share more as soon as I hear back from my CTO office.
+
+Cheers
+
+On Wed, Jun 14, 2023 at 10:18=E2=80=AFAM Martino, Jack <mamartino@deloitte.=
+com>
+wrote:
+
+> Hi Brian,
+>
+>
+>
+> Hope you have been well. I wanted to reach out to see if I could gather
+> some information / your opinion as we are working through our engagement
+> with LeakSignal.
+>
+>
+>
+> At this point, we have got LeakSignal hooked up into our cluster with a
+> sample application and it seems to be working fine. I mostly wanted to
+> inquire if you knew of any comparable tools that may be provided by Red H=
+at
+> or that would be available in the market, we were thinking Service Mesh. =
+We
+> mostly are trying to get a sense of how this tool can fit into what we ar=
+e
+> doing with the lab and the market itself.
+>
+>
+> Please let me know if you have any ideas, I am also doing research on my
+> end for these same topics.
+>
+>
+>
+> Thanks,
+> Jack
+>
+>
+>
+> *Jack Martino*
+>
+> Cloud and Infrastructure Engineer* |* SNET Technical Architecture
+>
+> Deloitte Consulting LLP
+>
+> 310 East Rivulon Blvd, Gilbert, AZ 85297
+>
+> Tel/Direct: +1 480 620 3772
+> mamartino@deloitte.com| www.deloitte.com
+>
+>
+>
+> Please consider the environment before printing.
+>
+>
+>
+> This message (including any attachments) contains confidential informatio=
+n
+> intended for a specific individual and purpose, and is protected by law. =
+If
+> you are not the intended recipient, you should delete this message and an=
+y
+> disclosure, copying, or distribution of this message, or the taking of an=
+y
+> action based on it, by you is strictly prohibited.
+>
+> Deloitte refers to a Deloitte member firm, one of its related entities, o=
+r
+> Deloitte Touche Tohmatsu Limited ("DTTL"). Each Deloitte member firm is a
+> separate legal entity and a member of DTTL. DTTL does not provide service=
+s
+> to clients. Please see www.deloitte.com/about to learn more.
+>
+> v.E.1
+>
+
+
+--=20
+Brian Hanvey
+Global Solutions Architect - GSI Ecosystems & Alliances
+Red Hat Inc.
+
+Mobile:  (303) 345-5869
+Email:  bhanvey@redhat.com
+
+--0000000000003114a405fe1ce41a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><d=
+iv dir=3D"ltr">Hello Jack,<div>I've reached out to our OpenShift CTO office=
+ to get some details around how we would/could secure the data plane in a s=
+ervice mesh env...I see Leaksignal as a good opportunity&nbsp;to fit this n=
+eed.</div><div>From an industry perspective, I'd see this being a value add=
+ to reduce/mitigate the risk profile in the FS market when it comes to K8's=
+ platforms.&nbsp; Would be a good check box for regulators.</div><div><br><=
+/div><div>I'll share more as soon as I hear back from my CTO office.</div><=
+div><br></div><div>Cheers</div></div><br><div class=3D"gmail_quote"><div di=
+r=3D"ltr" class=3D"gmail_attr">On Wed, Jun 14, 2023 at 10:18=E2=80=AFAM Mar=
+tino, Jack &lt;<a href=3D"mailto:mamartino@deloitte.com">mamartino@deloitte=
+.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
+gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
+ex"><div class=3D"msg-8241004576176694430">
+
+
+
+
+
+<div lang=3D"EN-US" style=3D"overflow-wrap: break-word;">
+<div class=3D"m_-8241004576176694430WordSection1">
+<p class=3D"MsoNormal">Hi Brian,</p>
+<p class=3D"MsoNormal"><u></u>&nbsp;<u></u></p>
+<p class=3D"MsoNormal">Hope you have been well. I wanted to reach out to se=
+e if I could gather some information / your opinion as we are working throu=
+gh our engagement with LeakSignal.
+</p>
+<p class=3D"MsoNormal"><u></u>&nbsp;<u></u></p>
+<p class=3D"MsoNormal">At this point, we have got LeakSignal hooked up into=
+ our cluster with a sample application and it seems to be working fine. I m=
+ostly wanted to inquire if you knew of any comparable tools that may be pro=
+vided by Red Hat or that would be
+ available in the market, we were thinking Service Mesh. We mostly are tryi=
+ng to get a sense of how this tool can fit into what we are doing with the =
+lab and the market itself.</p>
+<p class=3D"MsoNormal"><br>
+Please let me know if you have any ideas, I am also doing research on my en=
+d for these same topics.</p>
+<p class=3D"MsoNormal"><u></u>&nbsp;<u></u></p>
+<p class=3D"MsoNormal">Thanks,<br>
+Jack</p>
+<p class=3D"MsoNormal"><u></u>&nbsp;<u></u></p>
+<div>
+<p class=3D"MsoNormal"><b><span style=3D"font-size:10pt;color:black">Jack M=
+artino</span></b><span style=3D"font-size:13.5pt;color:black"><u></u><u></u=
+></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10pt;color:black">Cloud and=
+ Infrastructure Engineer<b>&nbsp;|</b>&nbsp;</span><span style=3D"font-size=
+:10pt;color:rgb(26,26,26);background:white">SNET Technical Architecture</sp=
+an><span style=3D"font-size:13.5pt;color:black"><u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10pt;color:black">Deloitte =
+Consulting LLP</span><span style=3D"font-size:13.5pt;color:black"><u></u><u=
+></u></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10pt;color:black">310 East =
+Rivulon Blvd, Gilbert, AZ 85297</span><span style=3D"font-size:13.5pt;color=
+:black"><u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10pt;color:black">Tel/Direc=
+t:&nbsp;</span><span style=3D"font-size:10pt;color:rgb(87,89,91)">+1 480 62=
+0 3772</span><u><span style=3D"font-size:10pt;color:rgb(4,74,145)"><br>
+</span></u><a href=3D"mailto:mamartino@deloitte.com" title=3D"mailto:mamart=
+ino@deloitte.com" target=3D"_blank"><span style=3D"font-size:10pt;color:rgb=
+(0,0,104)">mamartino@deloitte.com</span></a><span style=3D"font-size:10pt;c=
+olor:black">|&nbsp;</span><a href=3D"http://www.deloitte.com/" title=3D"htt=
+p://www.deloitte.com/" target=3D"_blank"><span style=3D"font-size:10pt;colo=
+r:rgb(0,0,104)">www.deloitte.com</span></a><span style=3D"font-size:13.5pt;=
+color:black"><u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:8pt;font-family:Verdana,san=
+s-serif;color:rgb(0,29,87)">&nbsp;</span><span style=3D"font-size:13.5pt;co=
+lor:black"><u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10pt;color:rgb(79,255,158)"=
+>Please consider the environment before printing.</span><span style=3D"font=
+-size:13.5pt;color:black"><u></u><u></u></span></p>
+</div>
+<p class=3D"MsoNormal"><u></u>&nbsp;<u></u></p>
+</div>
+<p>This message (including any attachments) contains confidential informati=
+on intended for a specific individual and purpose, and is protected by law.=
+ If you are not the intended recipient, you should delete this message and =
+any disclosure, copying, or distribution
+ of this message, or the taking of any action based on it, by you is strict=
+ly prohibited.</p>
+<p>Deloitte refers to a Deloitte member firm, one of its related entities, =
+or Deloitte Touche Tohmatsu Limited (&quot;DTTL&quot;). Each Deloitte membe=
+r firm is a separate legal entity and a member of DTTL. DTTL does not provi=
+de services to clients. Please see <a href=3D"http://www.deloitte.com/about=
+" target=3D"_blank">www.deloitte.com/about</a>
+ to learn more.</p>
+<p>v.E.1</p>
+</div>
+
+</div></blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gm=
+ail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signatu=
+re"><div dir=3D"ltr"><div><div dir=3D"ltr"><div><div dir=3D"ltr"><div><div =
+dir=3D"ltr"><div><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div di=
+r=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"lt=
+r"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div=
+>Brian Hanvey</div><div>Global Solutions Architect - GSI Ecosystems &amp; A=
+lliances</div><div>Red Hat Inc.</div><div><br></div><div>Mobile:&nbsp;&nbsp=
+;<span style=3D"font-size:12.8px">(303) 345-5869</span></div><div>Email:&nb=
+sp; <a href=3D"mailto:bhanvey@redhat.com" target=3D"_blank">bhanvey@redhat.=
+com<br><br></a></div></div></div></div></div></div></div></div></div></div>=
+</div></div></div></div></div></div></div></div></div></div></div></div>
+
+--0000000000003114a405fe1ce41a--
