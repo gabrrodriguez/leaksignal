@@ -1,0 +1,9 @@
+apiVersion: helm.openshift.io/v1beta1
+kind: HelmChartRepository
+metadata:
+  name: command
+spec:
+  connectionConfig:
+    url: >-
+      https://robot$deloitte:wGnUdhrTKSpZIuZpSy99QzBJJDPGN0AM@artifacts.leaksignal.com/chartrepo/command
+  name: LeakSignal

@@ -1,0 +1,15 @@
+apiKey: CHANGE ME
+environmentVariables:
+- HOSTNAME
+- POD_NAME
+- INSTANCE_IP
+- ISTIO_META_WORKLOAD_NAME
+- ISTIO_META_MESH_ID
+- TRUST_DOMAIN
+- POD_NAMESPACE
+- SERVICE_ACCOUNT
+wasmVersion: 2023_05_18_21_07_49_f063d52_0.1.14
+wasmSha256: 2701402aee1af986522b0f5286150faa361f1d9a7324d40dd207505a780cd7f9
+ingestionHost: ingestion.leaksignal.yourdomain.tld
+ingestionPort: 443
+caFilename: /etc/ssl/certs/ca-bundle.crt

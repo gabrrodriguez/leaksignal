@@ -1,0 +1,125 @@
+
+# Used to generate certificates for the api/dashboard/ingestion ingress
+certManager:
+  letsencrypt:
+    email: changeme@yourdomain.tld
+    solvers:
+      - http01:
+          ingress: {}
+# Credentials to pull command & dashboard images
+imageCredentials:
+  password: wGnUdhrTKSpZIuZpSy99QzBJJDPGN0AM
+  registry: artifacts.leaksignal.com
+  username: robot$deloitte
+# Image for api/ingestion/tasks services
+commandImage: 'artifacts.leaksignal.com/command/infra:0.1.0'
+# Configuration for Command API service. Generally API has little requirements other than the dashboard or automated tools calling into it.
+api:
+  # Percentages of cpu & memory utilization to trigger an autoscale
+  autoscale:
+    cpuUtilization: 50
+    maxReplicas: 5
+    memoryUtilization: 50
+    minReplicas: 2
+  cpuLimit: null
+  cpuRequest: 2
+  memoryLimit: 8196Mi
+  memoryRequest: 1024Mi
+  nodePort: 30211
+  replicaCount: 2
+  ingress:
+    host: api.leaksignal.yourdomain.tld
+# Configuration for Command ingestion service. Generally ingestion is the most bandwidth and computationally demanding service, effectively requiring autoscaling in production environments.
+# Focus should be on a larger number of smaller pods, as bandwidth is the expected bottleneck and ingestion will benefit from being distributed on all nodes of the cluster.
+ingestion:
+  # Percentages of cpu & memory utilization to trigger an autoscale
+  autoscale:
+    cpuUtilization: 50
+    maxReplicas: 10
+    memoryUtilization: 50
+    minReplicas: 2
+  cpuLimit: null
+  cpuRequest: 2
+  memoryLimit: 8196Mi
+  memoryRequest: 1024Mi
+  nodePort: 30212
+  replicaCount: 2
+  ingress:
+    host: ingestion.leaksignal.yourdomain.tld
+    passthroughTls: true
+# Image of LeakSignal dashboard
+dashboardImage: 'artifacts.leaksignal.com/command/dashboard:0.1.0'
+# Configuration for Command dashboard. This is a SSR (server-side rendering) service that also proxies all of API for the dashboard.
+dashboard:
+  # Percentages of cpu & memory utilization to trigger an autoscale
+  autoscale:
+    cpuUtilization: 50
+    maxReplicas: 5
+    memoryUtilization: 50
+    minReplicas: 2
+  cpuLimit: null
+  cpuRequest: 1
+  memoryLimit: 8196Mi
+  memoryRequest: 1024Mi
+  nodePort: 30213
+  replicaCount: 2
+  ingress:
+    host: leaksignal.yourdomain.tld
+# Configuration for Command tasks service. This is a somewhat compute heavy service in charge of running periodic tasks. Only one pod is deployed for now (not horizontally scaled).
+tasks:
+  cpuLimit: null
+  cpuRequest: 4
+  memoryLimit: 8196Mi
+  memoryRequest: 1024Mi
+# Configuration for a small single-pod Redis deployment. Used by ingestion and task pods to track connected LeakSignal proxies and various rules/ratelimit information.
+# Has a small resource requirement, and is ephemeral (no persistent storage).
+cache:
+  cpuLimit: null
+  cpuRequest: null
+  memoryLimit: 1024Mi
+  memoryRequest: 512Mi
+# Configuration for Postgres
+appdb:
+  cpuLimit: null
+  cpuRequest: 1
+  memoryLimit: null
+  memoryRequest: 2Gi
+  password: CHANGE ME
+  # Pre-defined storage class in openshift
+  storageClass: gp3
+  storageSize: 16Gi
+# Configuration for Clickhouse cluster -- used for telemetry storage
+datadb:
+  cpuLimit: null
+  cpuRequest: 4
+  memoryLimit: null
+  memoryRequest: 8Gi
+  password: temp_password
+  shards: 3
+  # Pre-defined storage class in openshift
+  storageClass: gp3
+  storageSize: 256Gi
+  availabilityZone: null
+# Secret used in Email tokens for registration/forgot password. Should be a random 32-character string. Not used when in OIDC mode.
+emailSsoSecret: CHANGE ME
+fullnameOverride: ''
+maximumBodySizeMb: 16
+nameOverride: ''
+# Public facing origin of Dashboard and API. Generally should point to Dashboard ingress.
+publicOrigin: 'https://leaksignal.yourdomain.tld/'
+# If true, extra metrics are collected mirroring LeakAgent
+collectLeakagentMetrics: true
+# Optional, configures creation of Prometheus Operator resources in the same namespace as Command. (works seamlessly with openshift)
+prometheusOperator:
+  scrapeInterval: 1s
+# Secret used in JWT tokens for authentication. Should be a random 32-character string.
+authSecret: CHANGE ME
+awsRegion: us-west-2
+clusterDns: cluster.local
+# Optional. If set, all users will belong to one company only by this name. The company will be created if it does not already exist.
+companyName: Deloitte
+# Optional. If set, OIDC is used for user authentication as opposed to open email registration. Requires `companyName` to be set.
+oidc:
+  client_id: CHANGE ME
+  client_secret: CHANGE ME
+  issuer: CHANGE ME
